@@ -1,1 +1,1 @@
-worker: py reminderbot.py
+worker:py reminderbot.py
