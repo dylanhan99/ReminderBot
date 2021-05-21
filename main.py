@@ -4,6 +4,7 @@ import os
 client = discord.Client()
 
 #BOT_TOKEN = environ['TOKEN']
+token = os.getenv("DISCORD_BOT_TOKEN")
 
 @client.event
 async def on_ready():
@@ -17,4 +18,4 @@ async def on_message(message):
     if message.content.startswith('$hello'):
         await message.channel.send('Hello!')
 
-client.run('ODQ0Nzg5MDIwNDk1MTgzOTQ0.YKXhFQ.WBAU5pdOxKPYgemCWFpsgmiE9hM')
+client.run(token)
