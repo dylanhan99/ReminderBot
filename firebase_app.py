@@ -11,7 +11,7 @@ firebaseConfig = {
     #"appId": "1:689305046691:web:7ff57c715688c11123f916",
     #"measurementId": "G-GBC6YBDGW5"
 }
-
+pyrebase.__spec__
 parentName = "Reminders"
 firebaseApp = pyrebase.initialize_app(firebaseConfig)
 dbRef = firebaseApp.database()
@@ -21,7 +21,13 @@ def Add(task, data):
 
 def GetReminders():
     return dbRef.child(parentName).get()
-    
+
+def Edit(task, data):
+    dbRef.child(parentName).child(task).update(data)
+
+def Remove(task):
+    dbRef.child(parentName).child(task).remove()
+
 #storageRef.child("FeelsGoodMan.png").put("FeelsGoodMan.png")
 
 #firebaseApp = pyrebase.initialize_app(firebaseConfig)
