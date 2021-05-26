@@ -21,6 +21,7 @@ def Add(task, data):
 
 def GetReminders():
     return dbRef.child(parentName).get()
+    
 #storageRef.child("FeelsGoodMan.png").put("FeelsGoodMan.png")
 
 #firebaseApp = pyrebase.initialize_app(firebaseConfig)
