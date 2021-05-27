@@ -96,5 +96,4 @@ async def Remove(ctx, *args):
     #if message.content.startswith('$hello'):
     #    await message.channel.send('Hello!')
 
-#client.run(token)
-client.run('ODQ0Nzg5MDIwNDk1MTgzOTQ0.YKXhFQ.WBAU5pdOxKPYgemCWFpsgmiE9hM')
+client.run(token)
