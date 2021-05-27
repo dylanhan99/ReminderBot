@@ -17,16 +17,31 @@ firebaseApp = pyrebase.initialize_app(firebaseConfig)
 dbRef = firebaseApp.database()
 
 def Add(task, data):
-    dbRef.child(parentName).child(task).set(data)
+    try:
+        dbRef.child(parentName).child(task).set(data)
+        return True
+    except:
+        return False
 
 def GetReminders():
-    return dbRef.child(parentName).get()
+    try:
+        return dbRef.child(parentName).get()
+    except:
+        return False
 
 def Edit(task, data):
-    dbRef.child(parentName).child(task).update(data)
+    try:
+        dbRef.child(parentName).child(task).update(data)
+        return True
+    except:
+        return False
 
 def Remove(task):
-    dbRef.child(parentName).child(task).remove()
+    try:
+        dbRef.child(parentName).child(task).remove()
+        return True
+    except:
+        return False
 
 #storageRef.child("FeelsGoodMan.png").put("FeelsGoodMan.png")
 
