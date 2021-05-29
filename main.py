@@ -8,6 +8,7 @@ import firebase_app as myFirebase
 #client = discord.Client()
 client = commands.Bot(command_prefix='.')
 token = os.getenv("DISCORD_BOT_TOKEN")
+ta = "Task"
 loc = "Location"
 date = "Date"
 time = "Time"
@@ -43,7 +44,7 @@ async def Add(ctx, *args):
 		d = args[2]
 		tm = args[3]
 		data = {loc: l, date: d, time: tm}
-		if(myFirebase.Add(t, data)):
+		if myFirebase.Add(t, data):
 			await ctx.send(fList("'{}' added!".format(t)))
 			print("Added {0}: {1}".format(t, data))
 		else:
@@ -64,13 +65,24 @@ async def Edit(ctx, *args):
 		await ctx.send(fList("Which reminder to edit?"))
 	elif len(args) == 3:
 		t = args[0]
-		data = {args[1]: args[2]}
-		if myFirebase.Edit(t, data):
-			await ctx.send(fList("'{}' edited!".format(t)))
-			print("Edited {0}: {1}".format(t, data))
-		else:
-			await ctx.send("Unknown Error Occured.")
-			print("Edit Failed")
+		l = args[1]
+		v = args[2]
+		if l == ta: # If editing task name
+			data = myFirebase.GetReminder(t).val()
+			if myFirebase.Add(v, data) and myFirebase.Remove(t):
+				await ctx.send(fList("'{}' edited!".format(t)))
+				print("Edited {0} to {1}".format(t, v))
+			else:
+				await ctx.send("Unknown Error Occured.")
+				print("Edit Failed")
+		else:		# If editing anything else
+			data = {l: v}
+			if myFirebase.Edit(t, data):
+				await ctx.send(fList("'{}' edited!".format(t)))
+				print("Edited {0}: {1}".format(t, data))
+			else:
+				await ctx.send("Unknown Error Occured.")
+				print("Edit Failed")
 	else:
 		s = "Missing parameters!\nReminder not edited."
 		await ctx.send(s)
@@ -96,5 +108,4 @@ async def Remove(ctx, *args):
     #if message.content.startswith('$hello'):
     #    await message.channel.send('Hello!')
 
-#client.run(token)
-client.run('ODQ0Nzg5MDIwNDk1MTgzOTQ0.YKXhFQ.WBAU5pdOxKPYgemCWFpsgmiE9hM')
+client.run(token)

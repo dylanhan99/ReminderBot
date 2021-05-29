@@ -23,6 +23,12 @@ def Add(task, data):
     except:
         return False
 
+def GetReminder(task):
+    try:
+        return dbRef.child(parentName).child(task).get()
+    except:
+        return False
+
 def GetReminders():
     try:
         return dbRef.child(parentName).get()
@@ -43,6 +49,8 @@ def Remove(task):
     except:
         return False
 
+
+#dbRef.child(parentName).child("Gds").update()
 #storageRef.child("FeelsGoodMan.png").put("FeelsGoodMan.png")
 
 #firebaseApp = pyrebase.initialize_app(firebaseConfig)
