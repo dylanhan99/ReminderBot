@@ -15,11 +15,17 @@ pyrebase.__spec__
 parentName = "Reminders"
 firebaseApp = pyrebase.initialize_app(firebaseConfig)
 dbRef = firebaseApp.database()
-
+print(dbRef.child(parentName).child("ggg").get().val())
 def Add(task, data):
     try:
         dbRef.child(parentName).child(task).set(data)
         return True
+    except:
+        return False
+
+def GetVal(task, key):
+    try:
+        return dbRef.child(parentName).child(task).child(key).get().val()
     except:
         return False
 
