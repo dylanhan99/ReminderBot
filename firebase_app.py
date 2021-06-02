@@ -15,7 +15,7 @@ pyrebase.__spec__
 parentName = "Reminders"
 firebaseApp = pyrebase.initialize_app(firebaseConfig)
 dbRef = firebaseApp.database()
-print(dbRef.child(parentName).child("ggg").get().val())
+
 def Add(task, data):
     try:
         dbRef.child(parentName).child(task).set(data)
@@ -31,13 +31,29 @@ def GetVal(task, key):
 
 def GetReminder(task):
     try:
-        return dbRef.child(parentName).child(task).get()
+        return dbRef.child(parentName).child(task).get().val()
     except:
         return False
 
 def GetReminders():
     try:
         return dbRef.child(parentName).get()
+    except:
+        return False
+
+def DoesReminderExist(task):
+    try:
+        if dbRef.child(parentName).child(task).get().val() == None:
+            return False
+        return True
+    except:
+        return False
+
+def DoesKeyExist(task, key):
+    try:
+        if dbRef.child(parentName).child(task).child(key).get().val() == None:
+            return False
+        return True
     except:
         return False
 

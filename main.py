@@ -65,24 +65,28 @@ async def Edit(ctx, *args):
 		await ctx.send(fList("Which reminder to edit?"))
 	elif len(args) == 3:
 		t = args[0]
-		l = args[1]
+		k = args[1]
 		v = args[2]
-		if l == ta: # If editing task name
-			data = myFirebase.GetReminder(t).val()
-			if myFirebase.Add(v, data) and myFirebase.Remove(t):
-				await ctx.send(fList("'{}' edited!".format(t)))
-				print("Edited {0} to {1}".format(t, v))
-			else:
-				await ctx.send("Unknown Error Occured.")
-				print("Edit Failed")
-		else:		# If editing anything else
-			data = {l: v}
-			if myFirebase.Edit(t, data):
-				await ctx.send(fList("'{}' edited!".format(t)))
-				print("Edited {0}: {1}".format(t, data))
-			else:
-				await ctx.send("Unknown Error Occured.")
-				print("Edit Failed")
+		if myFirebase.DoesReminderExist(t) and myFirebase.DoesKeyExist(k):
+			if k == ta: # If editing task name
+				data = myFirebase.GetReminder(t)
+				if myFirebase.Add(v, data) and myFirebase.Remove(t):
+					await ctx.send(fList("'{}' edited!".format(t)))
+					print("Edited {0} to {1}".format(t, v))
+				else:
+					await ctx.send("Unknown Error Occured.")
+					print("Edit Failed")
+			else:		# If editing anything else
+				data = {k: v}
+				if myFirebase.Edit(t, data):
+					await ctx.send(fList("'{}' edited!".format(t)))
+					print("Edited {0}: {1}".format(t, data))
+				else:
+					await ctx.send("Unknown Error Occured.")
+					print("Edit Failed")
+		else:
+			await ctx.send("Task/Key is invalid.")
+			print("Edit Failed")
 	else:
 		s = "Missing parameters!\nReminder not edited."
 		await ctx.send(s)
@@ -94,10 +98,15 @@ async def Remove(ctx, *args):
 	if len(args) == 0:
 		await ctx.send(fList("Which reminder to remove?"))
 	elif len(args) >= 1:
-		if myFirebase.Remove(args[0]):
-			await ctx.send(fList("'{}' removed!".format(args[0])))
+		t = args[0]
+		if myFirebase.DoesReminderExist(t):
+			if myFirebase.Remove(t):
+				await ctx.send(fList("Removed '{}'".format(args[0])))
+			else:
+				await ctx.send("Unknown Error Occured.")
+				print("Removal Failed")
 		else:
-			await ctx.send("Unknown Error Occured.")
+			await ctx.send("Task is invalid.")
 			print("Removal Failed")
 
 #@client.event
