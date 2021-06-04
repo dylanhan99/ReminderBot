@@ -13,30 +13,19 @@ loc = "Location"
 date = "Date"
 time = "Time"
 
-reminderDic = myFirebase.GetReminders()
-
-def UpdateReminderDic():
-	reminderDic = myFirebase.GetReminders()
-
-def iGetReminderFromDic(index):
-	count = 0
-	for r in reminderDic.each():
-		if count == index:
-			return r
-	return None
-
 def fList(header):
 	s = ""
 	if header != "":
 		s = "{}\n".format(header)
 	i = 1
-	if reminderDic.val() != None:
-		for r in reminderDic.each():
+	reminders = myFirebase.GetReminders()
+	if reminders != False:
+		for r in reminders.each():
 			s += "{0}.\t{1} @ {2}\t{3}\t{4}hrs\n".format(i, r.key(), r.val()[loc], r.val()[date], r.val()[time])
 			i += 1
 	else:
-		s = "No reminders available."
-		print("Empty list")
+		s = "Unknown Error Occured."
+		print("List failed")
 	return s
 
 @client.event
@@ -56,7 +45,6 @@ async def Add(ctx, *args):
 		tm = args[3]
 		data = {loc: l, date: d, time: tm}
 		if myFirebase.Add(t, data):
-			UpdateReminderDic()
 			await ctx.send(fList("'{}' added!".format(t)))
 			print("Added {0}: {1}".format(t, data))
 		else:
@@ -83,7 +71,6 @@ async def Edit(ctx, *args):
 			if k == ta: # If editing task name
 				data = myFirebase.GetReminder(t)
 				if myFirebase.Add(v, data) and myFirebase.Remove(t):
-					UpdateReminderDic()
 					await ctx.send(fList("'{}' edited!".format(t)))
 					print("Edited {0} to {1}".format(t, v))
 				else:
@@ -92,7 +79,6 @@ async def Edit(ctx, *args):
 			else:		# If editing anything else
 				data = {k: v}
 				if myFirebase.Edit(t, data):
-					UpdateReminderDic()
 					await ctx.send(fList("'{}' edited!".format(t)))
 					print("Edited {0}: {1}".format(t, data))
 				else:
@@ -113,10 +99,8 @@ async def Remove(ctx, *args):
 		await ctx.send(fList("Which reminder to remove?"))
 	elif len(args) >= 1:
 		t = args[0]
-		#t = reminderDic
 		if myFirebase.DoesReminderExist(t):
 			if myFirebase.Remove(t):
-				UpdateReminderDic()
 				await ctx.send(fList("Removed '{}'".format(args[0])))
 			else:
 				await ctx.send("Unknown Error Occured.")
@@ -133,5 +117,4 @@ async def Remove(ctx, *args):
     #if message.content.startswith('$hello'):
     #    await message.channel.send('Hello!')
 
-#client.run(token)
-client.run('ODQ0Nzg5MDIwNDk1MTgzOTQ0.YKXhFQ.RnHln5YDlnrh-cnzYGW3JeL9xbg')
+client.run(token)

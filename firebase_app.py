@@ -71,7 +71,6 @@ def Remove(task):
     except:
         return False
 
-print(GetReminders().val())
 
 #dbRef.child(parentName).child("Gds").update()
 #storageRef.child("FeelsGoodMan.png").put("FeelsGoodMan.png")
