@@ -49,7 +49,7 @@ def DoesReminderExist(task):
     except:
         return False
 
-def DoesKeyExist(task, key): #Does not seem to work
+def DoesKeyExist(task, key):
     try:
         if dbRef.child(parentName).child(task).child(key).get().val() == None:
             return False

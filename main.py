@@ -64,8 +64,9 @@ async def Add(ctx, *args):
 			await ctx.send(fList("'{}' added!".format(t)))
 			print("Added {0}: {1}".format(t, data))
 		else:
-			await ctx.send("Unknown Error Occured.")
-			print("Add Failed")
+			await ctx.send("Internal Error Occured.")
+			err = "Firebase ADD function failed"
+			print("Add Failed: {}".format(err))
 	else:
 		s = "Missing parameters!\nReminder not added."
 		await ctx.send(s)
@@ -85,31 +86,35 @@ async def Edit(ctx, *args):
 			t = reminderList[i].key()
 			k = args[1]
 			v = args[2]
-			#if myFirebase.DoesReminderExist(t) and myFirebase.DoesKeyExist(k):
-			if k == ta: # If editing task name
-				data = myFirebase.GetReminder(t)
-				if myFirebase.Add(v, data) and myFirebase.Remove(t):
-					UpdateReminderDic()
-					await ctx.send(fList("'{}' edited!".format(t)))
-					print("Edited {0} to {1}".format(t, v))
-				else:
-					await ctx.send("Unknown Error Occured.")
-					print("Edit Failed 1")
-			else:		# If editing anything else
-				data = {k: v}
-				if myFirebase.Edit(t, data):
-					UpdateReminderDic()
-					await ctx.send(fList("'{}' edited!".format(t)))
-					print("Edited {0}: {1}".format(t, data))
-				else:
-					await ctx.send("Unknown Error Occured.")
-					print("Edit Failed 2")
-			#else:
-			#	await ctx.send("Task/Key is invalid.")
-			#	print("Edit Failed 3")
+			if myFirebase.DoesReminderExist(t) and myFirebase.DoesKeyExist(t, k):
+				if k == ta: # If editing task name
+					data = myFirebase.GetReminder(t)
+					if myFirebase.Add(v, data) and myFirebase.Remove(t):
+						UpdateReminderDic()
+						await ctx.send(fList("'{}' edited!".format(t)))
+						print("Edited {0} to {1}".format(t, v))
+					else:
+						await ctx.send("Internal Error Occured.")
+						err = "Firebase ADD/REMOVE function failed"
+						print("Edit Failed: {}".format(err))
+				else:		# If editing anything else
+					data = {k: v}
+					if myFirebase.Edit(t, data):
+						UpdateReminderDic()
+						await ctx.send(fList("'{}' edited!".format(t)))
+						print("Edited {0}: {1}".format(t, data))
+					else:
+						await ctx.send("Internal Error Occured.")
+						err = "Firebase EDIT function failed"
+						print("Edit Failed: {}".format(err))
+			else:
+				await ctx.send("Task/Key is invalid.")
+				err = "Task/Key is invalid"
+				print("Edit Failed: {}".format(err))
 		except:
 			await ctx.send("Unknown Error Occured.")
-			print("Edit Failed 4")
+			err = "Unknown error occured"
+			print("Edit Failed: {}".format(err))
 	else:
 		s = "Missing parameters!\nReminder not edited."
 		await ctx.send(s)
@@ -128,14 +133,17 @@ async def Remove(ctx, *args):
 				await ctx.send(fList("Removed '{}'".format(t)))
 				print("Removed '{}'".format(t))
 			else:
-				await ctx.send("Unknown Error Occured.")
-				print("Removal Failed")
+				await ctx.send("Internal Error Occured.")
+				err = "Firebase REMOVE function failed"
+				print("Remove Failed: {}".format(err))
 		except:
 			await ctx.send("Unknown Error Occured.")
-			print("Removal Failed")
+			err = "Unknown error occured"
+			print("Remove Failed: {}".format(err))
 	else:
-		await ctx.send("Task is invalid.")
-		print("Removal Failed")
+		await ctx.send("Invalid Arguments.")
+		err = "Invalid arguments"
+		print("Remove Failed: {}".format(err))
 
 #@client.event
 #async def on_message(message):
