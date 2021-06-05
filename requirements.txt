@@ -7,5 +7,6 @@ idna==3.1
 multidict==5.1.0
 pyrebase==3.0.27
 requests==2.25.1
+schedule==1.1.0
 typing-extensions==3.10.0.0
 yarl==1.6.3
