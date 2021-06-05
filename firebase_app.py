@@ -49,7 +49,7 @@ def DoesReminderExist(task):
     except:
         return False
 
-def DoesKeyExist(task, key):
+def DoesKeyExist(task, key): #Does not seem to work
     try:
         if dbRef.child(parentName).child(task).child(key).get().val() == None:
             return False
@@ -70,8 +70,6 @@ def Remove(task):
         return True
     except:
         return False
-
-print(GetReminders().val())
 
 #dbRef.child(parentName).child("Gds").update()
 #storageRef.child("FeelsGoodMan.png").put("FeelsGoodMan.png")
