@@ -70,21 +70,3 @@ def Remove(task):
         return True
     except:
         return False
-
-#dbRef.child(parentName).child("Gds").update()
-#storageRef.child("FeelsGoodMan.png").put("FeelsGoodMan.png")
-
-#firebaseApp = pyrebase.initialize_app(firebaseConfig)
-#dbRef = firebaseApp.database()
-#task = "Do drugs"
-#data = {
-#    "Location": "safti",
-#    "Date": 19802110,
-#    "Time": 2110 
-#    }
-#dbRef.child(parentName).child(task).set(data)
-#
-#reminders = dbRef.child(parentName).get()
-#for r in reminders.each():
-#    print(r.key())
-#    print(r.val())
