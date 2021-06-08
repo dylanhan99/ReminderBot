@@ -20,7 +20,7 @@ class GlobalCache:
         if header != "":
             s = "{}\n".format(header)
         i = 1
-        if reminderDic.val() != None:
+        if GlobalCache.reminderDic.val() != None:
             for r in reminderList:
                 s += GlobalCache.ListReminderFormat(i, r)
                 i += 1
