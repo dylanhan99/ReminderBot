@@ -22,11 +22,15 @@ class GlobalCache:
         i = 1
         if reminderDic.val() != None:
             for r in reminderList:
-                s += "{0}.\t{1} @ {2}\t{3}\t{4}hrs\n".format(i, r.key(), r.val()[GlobalCache.location], r.val()[GlobalCache.date], r.val()[GlobalCache.time])
+                s += GlobalCache.ListReminderFormat(i, r)
                 i += 1
         else:
             s = "No reminders available."
             print("Empty list")
+        return s
+
+    def ListReminderFormat(i, r):
+        s = "{0}.\t{1} @ {2}\t{3}\t{4}hrs\n".format(i, r.key(), r.val()[GlobalCache.location], r.val()[GlobalCache.date], r.val()[GlobalCache.time])
         return s
 
     def StringToDate(s):
