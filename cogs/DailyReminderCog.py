@@ -12,6 +12,11 @@ class DailyReminderCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.TimeCheck.start()
+        self.channel = None
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        self.channel = discord.utils.get(self.bot.get_all_channels(), name=GlobalCache.rbChannelName)
 
     def cog_unload(self):
         self.TimeCheck.cancel()
@@ -50,8 +55,7 @@ class DailyReminderCog(commands.Cog):
         GMTp8 = utc.astimezone(to_zone)
 
         if GMTp8.hour == 0 and GMTp8.minute == 0:
-            channel = discord.utils.get(self.bot.get_all_channels(), name='bot-test')
-            await channel.send(self.PrepareRemindersToPrint(GMTp8))
+            await self.channel.send(self.PrepareRemindersToPrint(GMTp8))
             
     @TimeCheck.before_loop
     async def before_TimeCheck(self):

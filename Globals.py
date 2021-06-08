@@ -1,4 +1,5 @@
 import datetime
+import discord.utils
 import firebase_app as myFirebase
 
 class GlobalCache:
@@ -7,13 +8,14 @@ class GlobalCache:
     date = "Date"
     time = "Time"
 
+    rbChannelName = "bot-test"
+
     reminderDic = myFirebase.GetReminders()
     reminderList = reminderDic.each()
 
     def UpdateReminderDic():
-        global reminderDic, reminderList
-        reminderDic = myFirebase.GetReminders()
-        reminderList = reminderDic.each()
+        GlobalCache.reminderDic = myFirebase.GetReminders()
+        GlobalCache.reminderList = GlobalCache.reminderDic.each()
 
     def ListAll(header):
         s = ""
@@ -21,7 +23,7 @@ class GlobalCache:
             s = "{}\n".format(header)
         i = 1
         if GlobalCache.reminderDic.val() != None:
-            for r in reminderList:
+            for r in GlobalCache.reminderList:
                 s += GlobalCache.ListReminderFormat(i, r)
                 i += 1
         else:
