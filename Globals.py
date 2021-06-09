@@ -17,12 +17,17 @@ class GlobalCache:
         GlobalCache.reminderDic = myFirebase.GetReminders()
         GlobalCache.reminderList = GlobalCache.reminderDic.each()
 
+    def DicIsEmpty():
+        if GlobalCache.reminderDic.val() == None:
+            return True
+        return False
+
     def ListAll(header):
         s = ""
         if header != "":
             s = "{}\n".format(header)
         i = 1
-        if GlobalCache.reminderDic.val() != None:
+        if GlobalCache.DicIsEmpty() == False:
             for r in GlobalCache.reminderList:
                 s += GlobalCache.ListReminderFormat(i, r)
                 i += 1
