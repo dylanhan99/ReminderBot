@@ -39,9 +39,10 @@ class DailyReminderCog(commands.Cog):
             else:
                 others += GlobalCache.ListReminderFormat(k, r)
                 k += 1
-        d  = "================================\n"
+        dt = GMTp8.strftime("%a, %d %b %y")
+        d  = "===============================\n"
         s  = d
-        s += "========   DAILY REMINDERS:   ========\n"
+        s += "===   DAILY REMINDERS: {}   ===\n".format(dt)
         s += d
         s += "{0}\n{1}\n{2}".format(overdue, today, others)
         s += d
