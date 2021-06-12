@@ -1,6 +1,7 @@
 import datetime
 import discord.utils
 import firebase_app as myFirebase
+from datetime import datetime
 
 class GlobalCache:
     task = "Task"
@@ -43,3 +44,19 @@ class GlobalCache:
     def StringToDate(s):
         ddmmyyyy = s.split("/") # [dd, mm, yyyy]
         return datetime.date(int(ddmmyyyy[2]), int(ddmmyyyy[1]), int(ddmmyyyy[0]))
+
+    def DateFormat(d):
+        format = "%d/%m/%Y"
+        try:
+            datetime.strptime(d, format)
+            return True
+        except:
+            return False
+
+    def TimeFormat(t):
+        format = "%H%M"
+        try:
+            datetime.strptime(t, format)
+            return True
+        except:
+            return False

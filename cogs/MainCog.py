@@ -25,6 +25,11 @@ class MainCog(commands.Cog):
             l = args[1]
             d = args[2]
             tm = args[3]
+            if (GlobalCache.DateFormat(d) and GlobalCache.TimeFormat(tm)) == False:
+                await self.channel.send("Date or Time format is incorrect.\nTo be in dd/mm/yyyy and hhmm format respectively.")
+                err = "User Input: Incorrect Date/Time format"
+                print("Add Failed: {}".format(err))
+                return
             data = {GlobalCache.location: l, GlobalCache.date: d, GlobalCache.time: tm}
             if myFirebase.Add(t, data):
                 GlobalCache.UpdateReminderDic()
@@ -35,9 +40,9 @@ class MainCog(commands.Cog):
                 err = "Firebase ADD function failed"
                 print("Add Failed: {}".format(err))
         else:
-            s = "Missing parameters!\nReminder not added."
-            await self.channel.send(s)
-            print(s)
+            await self.channel.send("Missing parameters!\nReminder not added.")
+            err = "User Input: Missing parameters"
+            print("Add Failed: {}".format(err))
 
     @commands.command()
     async def List(self, ctx):
@@ -69,6 +74,16 @@ class MainCog(commands.Cog):
                             err = "Firebase ADD/REMOVE function failed"
                             print("Edit Failed: {}".format(err))
                     else:		# If editing anything else
+                        if k == GlobalCache.date and GlobalCache.DateFormat(v) == False:
+                            await self.channel.send("Date format is incorrect.\nTo be in dd/mm/yyyy format.")
+                            err = "User Input: Incorrect Date format"
+                            print("Add Failed: {}".format(err))
+                            return
+                        elif k == GlobalCache.time and GlobalCache.TimeFormat(v) == False:
+                            await self.channel.send("Time format is incorrect.\nTo be in hhmm format.")
+                            err = "User Input: Incorrect Time format"
+                            print("Add Failed: {}".format(err))
+                            return
                         data = {k: v}
                         if myFirebase.Edit(t, data):
                             GlobalCache.UpdateReminderDic()
@@ -85,7 +100,7 @@ class MainCog(commands.Cog):
             except:
                 await self.channel.send("Unknown Error Occured.")
                 err = "Unknown error occured"
-                print("Edit Failed: {}".format(err))
+                raise ValueError("Edit Failed: {}".format(err))
         else:
             s = "Missing parameters!\nReminder not edited."
             await self.channel.send(s)
@@ -114,7 +129,7 @@ class MainCog(commands.Cog):
             except:
                 await self.channel.send("Unknown Error Occured.")
                 err = "Unknown error occured"
-                print("Remove Failed: {}".format(err))
+                raise ValueError("Remove Failed: {}".format(err))
         else:
             await self.channel.send("Invalid Arguments.")
             err = "Invalid arguments"
