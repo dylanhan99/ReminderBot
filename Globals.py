@@ -60,3 +60,6 @@ class GlobalCache:
             return True
         except:
             return False
+
+    def ToUTC(d, t):
+        return

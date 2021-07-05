@@ -62,7 +62,8 @@ class MainCog(commands.Cog):
                 t = GlobalCache.reminderList[i].key()
                 k = args[1]
                 v = args[2]
-                if myFirebase.DoesReminderExist(t) and myFirebase.DoesKeyExist(t, k):
+                if (myFirebase.DoesReminderExist(t) and k == GlobalCache.task) or \
+                    (myFirebase.DoesReminderExist(t) and myFirebase.DoesKeyExist(t, k)):
                     if k == GlobalCache.task: # If editing task name
                         data = myFirebase.GetReminder(t)
                         if myFirebase.Add(v, data) and myFirebase.Remove(t):
