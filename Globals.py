@@ -10,6 +10,8 @@ class GlobalCache:
     time = "Time"
 
     rbChannelName = "bot-test"
+    bot = None
+    channel = None
 
     reminderDic = myFirebase.GetReminders()
     reminderList = reminderDic.each()
@@ -55,11 +57,14 @@ class GlobalCache:
 
     def TimeFormat(t):
         format = "%H%M"
-        try:
-            datetime.strptime(t, format)
+        if datetime.strptime(t, format):
             return True
-        except:
-            return False
+        return False
 
     def ToUTC(d, t):
+        return
+
+    async def Log(msg):
+        #channel = discord.utils.get(bot.get_all_channels(), name=GlobalCache.rbChannelName)
+        #await 
         return
